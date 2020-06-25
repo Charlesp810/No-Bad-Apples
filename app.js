@@ -6,12 +6,17 @@ const path = require('path');
 const app = express();
 
 app.use(volleyball);
-
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname, './public')));
 
-app.get('/', (req, res, next) => {
-    res.send('./public/index.html')
+app.use('*', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/index.html'))
 })
+
+// app.get('/', (req, res, next) => {
+//     res.send('./public/index.html')
+// })
 
 app.use((err, req, res, next) => {
     console.error(err);
