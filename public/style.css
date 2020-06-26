@@ -1,2 +1,25 @@
 .Title {
+    text-align: center;
+    justify-content: center;
+    width: 85%;
+    margin: 0 auto;
+}
+
+canvas {
+    display: block;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -20%);
+}
+
+body {
+    /* background-color:rgb(187, 235, 243);
+    color: rgb(38, 78, 122); */
+    /* background-color: rgb(245, 243, 149);
+    color: rgb(46, 137, 181); */
+    background-color: rgb(243, 226, 196);
+    color: rgb(222, 56, 56);
+
 }

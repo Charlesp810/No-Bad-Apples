@@ -69,7 +69,7 @@ function create() {
 
     youWin = this.add.text(550, 300, "(>'.')> YOU WIN !!<('.'<)", {
         fontSize: '75px',
-        fill: '#00FFFF'
+        fill: '#FFD700'
     })
     youWin.setOrigin(0.5)
     youWin.visible = false
@@ -101,7 +101,7 @@ function create() {
     })
 
     goodApple.children.iterate((child) => {
-        let y = Phaser.Math.Between(-200, -2000)
+        let y = Phaser.Math.Between(-1000, -2000)
         let x = Phaser.Math.Between(0, 1200)
         child.setY(y)
         child.setX(x)
@@ -118,7 +118,7 @@ function create() {
     })
 
     badApple.children.iterate((child) => {
-        let y = Phaser.Math.Between(-200, -2000)
+        let y = Phaser.Math.Between(-1000, -2000)
         let x = Phaser.Math.Between(0, 1200)
         child.setY(y)
         child.setX(x)
@@ -137,6 +137,7 @@ function create() {
 
 function update(time, delta) {
     this.physics.world.wrap(goodApple, 300)
+    this.physics.world.wrap(badApple, 300)
     if (lives === 2) {
         heart.destroy()
     } else if (lives === 1) {
