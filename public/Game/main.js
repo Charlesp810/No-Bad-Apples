@@ -13,7 +13,8 @@ const config = {
     scene: {
         preload: preload,
         create: create,
-        update: update
+        update: update,
+        collectFood: collectFood
     }
 }
 
@@ -23,33 +24,73 @@ let person
 let goodApple
 let badApple
 let background
+let scoreText
+let score = 0
+let ground
 
 function preload() {
     this.load.image('background', '../images/apple-tree.png')
+    this.load.image('ground', '../images/ground.png')
     this.load.image('boy', '../images/boy.png')
-    this.load.image('goodApple', '../images/mini-apple.png')
-    this.load.image('badApple', '../images/mini-bad-apple/png')
+    this.load.spritesheet('goodApple', '../images/mini-apple.png', {
+        frameWidth: 100,
+        frameHeight: 100,
+        spacing: 1
+    })
+    // this.load.spritesheet('badApple', '../images/mini-bad-apple/png')
 }
 
 function create() {
     background = this.add.image(0, 0, 'background').setOrigin(0).setScale(0.85)
+    ground = this.physics.add.staticSprite(600, 675, 'ground')
 
+    scoreText = this.add.text(16, 16, 'Score: 0', {
+        fontSize: '20px',
+        fill: '#000'
+    })
 
-    person = this.add.sprite(500, 540, 'boy')
+    person = this.physics.add.sprite(500, 500, 'boy')
+
 
     this.input.keyboard.on('keydown_D', function (event) {
-        person.x += 30
+        person.x += 20
     })
 
     this.input.keyboard.on('keydown_A', function (event) {
-        person.x -= 30
+        person.x -= 20
     })
 
-    // goodApple = game.add.emitter(game, 100, 0, 100)
-    // goodApple.makeParticles('goodApple', 1000, 20, true, true)
-    // goodApple.start(false, 8000, 500)
+    goodApple = this.physics.add.group()
+    goodApple.createMultiple({
+        key: 'goodApple',
+        frame: Phaser.Utils.Array.NumberArray(0, 13),
+        randomFrame: true,
+        repeat: 1
+
+    })
+
+    goodApple.children.iterate((child) => {
+        let y = Phaser.Math.Between(-200, -2000)
+        let x = Phaser.Math.Between(0, 1200)
+        child.setY(y)
+        child.setX(x)
+        child.setMaxVelocity(200)
+    })
+
+    this.physics.add.collider(person, ground)
+    // this.physics.add.collider(person, goodApple, function (person, goodApple) {
+    //     goodApple.destroy()
+    // })
+    this.physics.add.overlap(person, goodApple, collectFood)
 }
 
-function update() {
+function update(time, delta) {
+    this.physics.world.wrap(goodApple, 300)
+}
 
+function collectFood(person, goodApple) {
+    goodApple.disableBody(true, true)
+
+    score += 1
+    scoreText.setText('Score: ' + score)
 }
