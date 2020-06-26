@@ -67,8 +67,6 @@ function create() {
     gameOverText.setOrigin(0.5)
     gameOverText.visible = false
 
-
-
     youWin = this.add.text(550, 300, "(>'.')> YOU WIN !!<('.'<)", {
         fontSize: '75px',
         fill: '#00FFFF'
@@ -148,7 +146,9 @@ function update(time, delta) {
         this.physics.pause()
         person.setTint('#FF0000')
         gameOverText.visible = true
-    } else if (score === 30) {
+    }
+
+    if (score === 30 && lives > 0) {
         this.physics.pause()
         youWin.visible = true
     }
