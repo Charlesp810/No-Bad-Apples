@@ -25,16 +25,16 @@ let goodApple
 let badApple
 let background
 let scoreText
-let gameOverText
 let score = 0
 let ground
 let heart
 let heart2
 let heart3
-let youWin
 let lives = 3
 let music
 let isPlaying = false
+let win
+let gameOver
 
 function preload() {
     this.load.audio('backgroundMusic', ['../images/yellow-forest.ogg'])
@@ -42,6 +42,8 @@ function preload() {
     this.load.image('ground', '../images/ground.png')
     this.load.image('boy', '../images/boy.png')
     this.load.image('heart', '../images/heart.png')
+    this.load.image('win', '../images/youWin.png')
+    this.load.image('gameOver', '../images/gameOver.png')
     this.load.spritesheet('goodApple', '../images/mini-apple.png', {
         frameWidth: 90,
         frameHeight: 90,
@@ -74,24 +76,15 @@ function create() {
         fontSize: '20px',
         fill: '#000'
     })
-    gameOverText = this.add.text(550, 300, 'GAME OVER', {
-        fontSize: '125px',
-        fill: '#FF0000'
-    })
-    gameOverText.setOrigin(0.5)
-    gameOverText.visible = false
 
-    youWin = this.add.text(550, 300, "(>'.')> YOU WIN !!<('.'<)", {
-        fontSize: '75px',
-        fill: '#FFD700'
-    })
-    youWin.setOrigin(0.5)
-    youWin.visible = false
+    gameOver = this.add.sprite(600, 300, 'gameOver')
+    gameOver.visible = false
+
+    win = this.add.sprite(550, 300, 'win')
+    win.visible = false
 
     heart = this.add.image(25, 50, 'heart')
-
     heart2 = this.add.image(55, 50, 'heart')
-
     heart3 = this.add.image(85, 50, 'heart')
 
     person = this.physics.add.sprite(500, 500, 'boy')
@@ -171,12 +164,13 @@ function update(time, delta) {
         heart.destroy()
         this.physics.pause()
         person.setTint('#FF0000')
-        gameOverText.visible = true
+        gameOver.visible = true
     }
 
     if (score === 30 && lives > 0) {
         this.physics.pause()
-        youWin.visible = true
+        person.destroy()
+        win.visible = true
     }
 }
 
