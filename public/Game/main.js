@@ -33,8 +33,11 @@ let heart2
 let heart3
 let youWin
 let lives = 3
+let music
+let isPlaying = false
 
 function preload() {
+    this.load.audio('backgroundMusic', ['../images/yellow-forest.ogg'])
     this.load.image('background', '../images/apple-tree.png')
     this.load.image('ground', '../images/ground.png')
     this.load.image('boy', '../images/boy.png')
@@ -52,6 +55,17 @@ function preload() {
 }
 
 function create() {
+    const musicConfig = {
+        mute: false,
+        volume: 1,
+        rate: 1,
+        detune: 0,
+        seek: 0,
+        loop: true,
+        delay: 0
+    }
+    music = this.sound.add('backgroundMusic', musicConfig)
+
     background = this.add.image(0, 0, 'background').setOrigin(0).setScale(0.85)
 
     ground = this.physics.add.staticSprite(600, 675, 'ground')
@@ -84,10 +98,20 @@ function create() {
 
     this.input.keyboard.on('keydown_D', function (event) {
         person.x += 20
+
+        if (isPlaying === false) {
+            music.play()
+            isPlaying = true
+        }
     })
 
     this.input.keyboard.on('keydown_A', function (event) {
         person.x -= 20
+
+        if (isPlaying === false) {
+            music.play()
+            isPlaying = true
+        }
     })
 
     goodApple = this.physics.add.group()
@@ -138,12 +162,13 @@ function create() {
 function update(time, delta) {
     this.physics.world.wrap(goodApple, 300)
     this.physics.world.wrap(badApple, 300)
+
     if (lives === 2) {
-        heart.destroy()
+        heart3.destroy()
     } else if (lives === 1) {
         heart2.destroy()
     } else if (lives <= 0) {
-        heart3.destroy()
+        heart.destroy()
         this.physics.pause()
         person.setTint('#FF0000')
         gameOverText.visible = true
